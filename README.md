@@ -68,7 +68,7 @@ change directory (cd) into the new folder,
 and run `code .` to open only this project in VS Code:
 
 ```shell
-git clone https://github.com/denisecase/databases-for-analytics
+git clone https://github.com/Angie-Crews/databases-for-analytics
 
 cd databases-for-analytics
 code .
@@ -193,7 +193,7 @@ Press `Ctrl c` (both keys together) or `Ctrl+Z` then `Enter` on Windows.
 
 ## Documentation
 
-- [Documentation](https://denisecase.github.io/databases-for-analytics/)
+- [Documentation](https://Angie-Crews.github.io/databases-for-analytics/)
 
 ## Data Card
 

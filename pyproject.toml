@@ -13,6 +13,10 @@
 
 [project]
 name = "databases-for-analytics" # Package distribution name (lowercase and dashes).
+description = "Course project and analytics exercises for Databases for Analytics."
+authors = [
+    { name = "Angie Crews" },
+]
 readme = "README.md"
 requires-python = ">=3.14"
 version = "1.2.0"
@@ -24,6 +28,10 @@ dependencies = [
     # "matplotlib", # WHY: Foundational plotting library for data visualization
     # "pandas", # WHY: DataFrame library for data manipulation and analysis.
 ]
+
+[project.urls]
+Homepage = "https://github.com/Angie-Crews/databases-for-analytics"
+Repository = "https://github.com/Angie-Crews/databases-for-analytics"
 
 [dependency-groups]
 # WHY: Development dependencies support maintaining and validating the project

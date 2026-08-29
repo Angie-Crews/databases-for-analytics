@@ -12,17 +12,17 @@ cff-version: "1.2.0"
 type: software
 
 title: "Databases for Analytics"
-version: "0.9.0"
+version: "1.2.0"
 date-released: "2026-01-11"
 
 authors:
-  - family-names: Case
-    given-names: Denise M.
+  - family-names: Crews
+    given-names: Angie
     orcid: "https://orcid.org/0000-0001-6165-7389"
     affiliation: "Northwest Missouri State University, School of Computer Science and Information Systems, Maryville, MO, USA"
 
-repository-code: "https://github.com/denisecase/databases-for-analytics"
-url: "https://github.com/denisecase/databases-for-analytics"
+repository-code: "https://github.com/Angie-Crews/databases-for-analytics"
+url: "https://github.com/Angie-Crews/databases-for-analytics"
 license: MIT
 
 abstract: >

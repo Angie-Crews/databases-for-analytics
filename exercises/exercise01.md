@@ -1,6 +1,6 @@
 # Exercise 01: World Database SQL Practice
 
-- Name:
+- Name: Angie Crews
 - Course: Database for Analytics
 - Module: 1
 - Database Used: World Database
@@ -20,7 +20,7 @@ See:
 - For each SQL command:
   - Include the SQL in a fenced code block
   - Include a **screenshot** showing the command and results
-- Store screenshots in the `screenshots/` folder and embed them below each answer.
+- Store screenshots in the `screenshots/exercise_01/` folder and embed them below each answer.
 
 ---
 
@@ -35,7 +35,7 @@ Why were these data types selected?
 
 ### Answer
 
-_Write your explanation here._
+_country.Population uses the INT data type because population is counted in whole numbers. country.LifeExpectancy uses DECIMAL(3,1) because life expectancy can include a decimal value. These data types make sense because population does not need decimal places, while life expectancy may need one decimal place.._
 
 ### Screenshot
 
@@ -45,7 +45,7 @@ _Show the table structure or DESCRIBE output._
 DESCRIBE country;
 ```
 
-![Q1 Screenshot](screenshots/q1_datatypes.png)
+![Q1 Screenshot](screenshots/exercise_01/q1_datatypes.png)
 
 ---
 
@@ -56,7 +56,7 @@ Why do you think this data type was selected?
 
 ### Answer
 
-_Write your explanation here._
+_IndepYear uses the SMALLINT data type. I think SMALLINT was selected because an independence year is a whole number, and SMALLINT provides enough range to store years without using as much storage as a larger integer type._
 
 ### Screenshot
 
@@ -64,7 +64,7 @@ _Write your explanation here._
 DESCRIBE country;
 ```
 
-![Q2 Screenshot](screenshots/q2_indepyear.png)
+![Q2 Screenshot](screenshots/exercise_01/q2_indepyear.png)
 
 ---
 
@@ -75,7 +75,7 @@ Explain why your proposed data type might be better in some situations.
 
 ### Answer
 
-_Write your explanation here._
+_The YEAR data type could be another option for IndepYear. YEAR clearly shows that the value represents a year instead of just a general number. This could make the database easier to understand and help keep the data consistent. However, SMALLINT may be better when years fall outside the range supported by YEAR._
 
 ---
 
@@ -93,7 +93,7 @@ ORDER BY Name;
 
 ### Screenshot
 
-![Q4 Screenshot](screenshots/q4_cities_sorted.png)
+![Q4 Screenshot](screenshots/exercise_01/q4_cities_sorted.png)
 
 ---
 
@@ -113,7 +113,7 @@ ORDER BY GovernmentForm;
 
 ### Screenshot
 
-![Q5 Screenshot](screenshots/q5_government_forms.png)
+![Q5 Screenshot](screenshots/exercise_01/q5_government_forms.png)
 
 ---
 
@@ -131,7 +131,7 @@ WHERE Continent = 'Oceania';
 
 ### Screenshot
 
-![Q6 Screenshot](screenshots/q6_oceania.png)
+![Q6 Screenshot](screenshots/exercise_01/q6_oceania.png)
 
 ---
 
@@ -148,7 +148,7 @@ FROM city;
 
 ### Screenshot
 
-![Q7 Screenshot](screenshots/q7_city_countrycode.png)
+![Q7 Screenshot](screenshots/exercise_01/q7_city_countrycode.png)
 
 ---
 
@@ -166,7 +166,7 @@ WHERE Name = 'Nashville-Davidson';
 
 ### Screenshot
 
-![Q8 Screenshot](screenshots/q8_update_city.png)
+![Q8 Screenshot](screenshots/exercise_01/q8_update_city.png)
 
 ---
 
@@ -185,7 +185,7 @@ VALUES ('NAR', 'Narnia', 'Europe', 'Fantasy', 1000000);
 
 ### Screenshot
 
-![Q9 Screenshot](screenshots/q9_insert_narnia.png)
+![Q9 Screenshot](screenshots/exercise_01/q9_insert_narnia.png)
 
 ---
 
@@ -202,4 +202,4 @@ WHERE Code = 'NAR';
 
 ### Screenshot
 
-![Q10 Screenshot](screenshots/q10_delete_narnia.png)
+![Q10 Screenshot](screenshots/exercise_01/q10_delete_narnia.png)

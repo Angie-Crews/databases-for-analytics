@@ -1,6 +1,6 @@
 # Exercise 03: MongoDB – Document Queries and Analysis
 
-- Name:
+- Name: Angie Crews
 - Course: Database for Analytics
 - Module: 3
 - Database Used: MongoDB
@@ -26,17 +26,17 @@ When importing the documents from `restaurants-json.json`,
 
 ### Answer
 
-_Write the number of documents imported._
+Number of documents imported = 25,358
 
 ### Screenshot
 
 _Show evidence of how you determined this (for example, a count query)._
 
 ```javascript
-// Your MongoDB command here
+db.restaurants.countDocuments({})
 ```
 
-![Q1 Screenshot](screenshots/q1_document_count.png)
+![Q1 Screenshot](screenshots/exercise_03/q1_document_count.png)
 
 ---
 
@@ -49,12 +49,12 @@ Before writing queries on the data,
 ### MongoDB Command
 
 ```javascript
-// Your MongoDB command here
+use 44661
 ```
 
 ### Screenshot
 
-![Q2 Screenshot](screenshots/q2_use_database.png)
+![Q2 Screenshot](screenshots/exercise_03/q2_use_database.png)
 
 ---
 
@@ -67,12 +67,12 @@ write the MongoDB query needed to
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.find({ borough: "Queens" })
 ```
 
 ### Screenshot
 
-![Q3 Screenshot](screenshots/q3_queens_restaurants.png)
+![Q3 Screenshot](screenshots/exercise_03/q3_queens_restaurants.png)
 
 ---
 
@@ -85,12 +85,12 @@ write the MongoDB query needed to
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.countDocuments({ borough: "Queens" })
 ```
 
 ### Screenshot
 
-![Q4 Screenshot](screenshots/q4_queens_count.png)
+![Q4 Screenshot](screenshots/exercise_03/q4_queens_count.png)
 
 ---
 
@@ -104,12 +104,12 @@ write the MongoDB query needed to
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.countDocuments({ borough: "Queens", cuisine: "Hamburgers" })
 ```
 
 ### Screenshot
 
-![Q5 Screenshot](screenshots/q5_queens_hamburgers.png)
+![Q5 Screenshot](screenshots/exercise_03/q5_queens_hamburgers.png)
 
 ---
 
@@ -119,17 +119,17 @@ Using your `restaurants` collection in the `44661` database,
 write the MongoDB query needed to
 **find the number of restaurants in Zipcode `10460`**.
 
-_Hint: Look up how to query **embedded documents**._
+**Hint: Embedded Documents** "address.zipcode" is in quotation marks because we're querying a nested field, and "10460" is also in quotation marks because the zipcode is stored as text in this dataset.
 
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.countDocuments({ "address.zipcode": "10460" })
 ```
 
 ### Screenshot
 
-![Q6 Screenshot](screenshots/q6_zipcode_count.png)
+![Q6 Screenshot](screenshots/exercise_03/q6_zipcode_count.png)
 
 ---
 
@@ -139,7 +139,7 @@ Using your `restaurants` collection in the `44661` database,
 write the MongoDB query needed to
 **display only the names of restaurants in Zipcode `10460`**.
 
-_Hint: Look up how to **project fields** in MongoDB._
+**Query Note: Project Fields** The query uses "address.zipcode" to search the embedded address document for restaurants in Zipcode 10460, and the projection limits the results to restaurant names. I added .forEach(r => print(r.name)) to print each restaurant name on its own line and remove the extra spacing from the standard MongoDB shell output.
 
 Your output should resemble:
 
@@ -155,12 +155,12 @@ Your output should resemble:
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db.restaurants.find({ "address.zipcode": "10460" }, { _id: 0, name: 1 }).forEach(r => print(r.name))
 ```
 
 ### Screenshot
 
-![Q7 Screenshot](screenshots/q7_zipcode_names.png)
+![Q7 Screenshot](screenshots/exercise_03/q7_zipcode_names.png)
 
 ---
 
@@ -178,10 +178,12 @@ Your results should include:
 
 ### MongoDB Query
 
+Query Note: The /IHOP/i regular expression searches for restaurant names containing "IHOP" while ignoring capitalization, and the projection displays only the restaurant name. To make the results easier to read without the extra spacing, .forEach(r => print(r.name)) can be added to print each matching name on a single line.
+
 ```javascript
-// Your MongoDB query here
+db.restaurants.find({ name: /IHOP/i }, { _id: 0, name: 1 }).forEach(r => print(r.name))
 ```
 
 ### Screenshot
 
-![Q8 Screenshot](screenshots/q8_ihop_case_insensitive.png)
+![Q8 Screenshot](screenshots/exercise_03/q8_ihop_case_insensitive.png)

@@ -1,8 +1,8 @@
 # Exercise 04: Advanced SQL, Jupyter, and Visualization
 
-- Name:
+- Name: Angie Crews
 - Course: Database for Analytics
-- Module:
+- Module: 4
 - Database Used: World Database
 - Tools Used: PostgreSQL, SQLAlchemy, Pandas, Jupyter Notebooks
 
@@ -34,12 +34,23 @@ along with the **number of official languages spoken**.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT
+    c.name AS country_name,
+    COUNT(cl.language) AS official_language_count
+FROM country AS c
+JOIN countrylanguage AS cl
+    ON c.code = cl.countrycode
+WHERE cl.isofficial = 'T'
+GROUP BY c.name
+HAVING COUNT(cl.language) > 2
+ORDER BY official_language_count DESC;
 ```
+### Query Note:
+WHERE filters for official languages before grouping, while HAVING filters the grouped results to countries with more than two official languages. In this database, 'T' represents an official language.
 
 ### Screenshot
 
-![Q1 Screenshot](screenshots/q1_official_language_counts.png)
+![Q1 Screenshot](screenshots/exercise_04/q1_official_language_counts.png)
 
 ---
 
@@ -52,16 +63,34 @@ After the `create_engine` command is executed,
 **what are the three statements** required to
 execute the query from Question 1 and
 **display the results in the notebook**?
+### Jupyter Notebook
+
+[View Exercise 04 Notebook](../notebooks/exercise04.ipynb)
 
 ### Python Code
 
 ```python
-# Your three Python statements here
+query = """
+SELECT
+    c.name AS country_name,
+    COUNT(cl.language) AS official_language_count
+FROM country AS c
+JOIN countrylanguage AS cl
+    ON c.code = cl.countrycode
+WHERE cl.isofficial = 'T'
+GROUP BY c.name
+HAVING COUNT(cl.language) > 2
+ORDER BY official_language_count DESC;
+"""
+
+df = pd.read_sql(query, engine)
+
+display(df)
 ```
 
 ### Screenshot
 
-![Q2 Screenshot](screenshots/q2_jupyter_query_results.png)
+![Q2 Screenshot](screenshots/exercise_04/q2_jupyter_query_results.png)
 
 ---
 
@@ -74,12 +103,27 @@ to produce the following graph:
 
 (The graph shows country-level results derived from the World database.)
 
+### Jupyter Notebook
+
+[View Exercise 04 Notebook](../notebooks/exercise04.ipynb)
+
 ### Python Code
 
 ```python
-# Your Python code here
+graph_df = df.rename(
+    columns={"official_language_count": "num_languages"}
+)
+
+ax = graph_df.plot(
+    kind="bar",
+    x="country_name",
+    y="num_languages"
+)
+
+ax.set_xlabel("")
+plt.show()
 ```
 
 ### Screenshot
 
-![Q3 Screenshot](screenshots/q3_countries_graph.png)
+![Q3 Screenshot](screenshots/exercise_04/q3_countries_graph.png)

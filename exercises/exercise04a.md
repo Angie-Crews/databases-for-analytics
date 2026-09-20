@@ -80,4 +80,4 @@ I used Pandas and SQLAlchemy to copy the World database tables from PostgreSQL i
 
 ## 6. Paste a clickable link to your project if you can git add, commit, and push it back to GitHub (hit ENTER after pasting):
 
-GitHub link will be added after the completed project is committed and pushed.
+https://github.com/Angie-Crews/databases-for-analytics/blob/main/exercises/exercise04a.md

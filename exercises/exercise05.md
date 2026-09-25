@@ -1,8 +1,8 @@
 # Exercise 05: SQLDA Database - Dates, Data Quality, Arrays, and JSON
 
-- Name:
+- Name: Angie Crews
 - Course: Database for Analytics
-- Module:
+- Module: 5
 - Database Used: `sqlda` (Sample Datasets)
 - Tools Used: PostgreSQL (pgAdmin or psql)
 
@@ -43,8 +43,15 @@ year
 ### SQL
 
 ```sql
--- Your SQL here
+
+SELECT DISTINCT
+    EXTRACT(YEAR FROM sent_date)::INTEGER AS year
+FROM emails
+WHERE sent_date IS NOT NULL
+ORDER BY year;
+
 ```
+**Query Note:** This query extracts the year from each email's sent date. I used DISTINCT to remove duplicate years and ORDER BY to display them from oldest to newest. My results returned eight unique years, ranging from 2013 to 2021.
 
 ### Screenshot
 
@@ -68,8 +75,19 @@ count   year
 ### SQL
 
 ```sql
--- Your SQL here
+
+-- Question 2: Count messages sent by year
+
+SELECT
+    COUNT(*) AS count,
+    EXTRACT(YEAR FROM sent_date)::INTEGER AS year
+FROM emails
+WHERE sent_date IS NOT NULL
+GROUP BY year
+ORDER BY year;
+
 ```
+**Query Note:** This query groups emails by the year they were sent and uses COUNT(*) to calculate the number of messages for each year. I used ORDER BY to display the results chronologically. The results show that 2019 had the highest number of emails sent, with 107,847 messages.
 
 ### Screenshot
 
@@ -90,8 +108,18 @@ Only include emails that contain **both** a sent date and an opened date.
 ### SQL
 
 ```sql
--- Your SQL here
+-- Question 3: Calculate the interval between sent and opened dates
+
+SELECT
+    sent_date,
+    opened_date,
+    opened_date - sent_date AS time_interval
+FROM emails
+WHERE sent_date IS NOT NULL
+    AND opened_date IS NOT NULL;
 ```
+
+**Query Note:** This query calculates the time between when an email was sent and when it was opened. I excluded records with missing dates so the interval could be calculated. The query returned 83,579 records and can also help identify unusual records where an email appears to have been opened before it was sent.
 
 ### Screenshot
 
@@ -108,8 +136,21 @@ show emails that contain an **opened date BEFORE the sent date**.
 ### SQL
 
 ```sql
--- Your SQL here
+
+-- Question 4: Find emails opened before they were sent
+
+SELECT
+    sent_date,
+    opened_date,
+    opened_date - sent_date AS time_interval
+FROM emails
+WHERE sent_date IS NOT NULL
+    AND opened_date IS NOT NULL
+    AND opened_date < sent_date
+ORDER BY sent_date;
+
 ```
+**Query Note:** This query identifies emails that appear to have been opened before they were sent. I compared the opened date with the sent date and calculated the time difference. The query returned 109 records with negative intervals, indicating a possible data quality issue.
 
 ### Screenshot
 
@@ -127,7 +168,23 @@ After looking at the data, **why is this the case?**
 
 ### Answer
 
-_Write your explanation here._
+**Answer:** After reviewing the data, I found 109 emails with an opened date earlier than the sent date. I ran an additional query and confirmed that all 109 emails had a sent timestamp of exactly 3:00 PM, while the opened times varied. This suggests a possible issue with how the timestamps were recorded or converted, such as a time zone difference or a default time being applied. The negative intervals indicate a data quality issue that should be investigated before using the data for analysis.
+
+### SQL
+
+```sql
+
+-- Question 5: Investigate unusual sent times
+
+SELECT
+    sent_date::TIME AS sent_time,
+    COUNT(*) AS email_count
+FROM emails
+WHERE opened_date < sent_date
+GROUP BY sent_date::TIME
+ORDER BY email_count DESC;
+
+```
 
 ### Screenshot (if requested by instructor)
 
@@ -168,7 +225,12 @@ CREATE TEMP TABLE customer_dealership_distance AS (
 
 ### Answer
 
-_Write your explanation here._
+**Answer:**
+This SQL creates three temporary tables to calculate the distance between customers and dealerships.
+The first table stores customer IDs and their geographic coordinates, excluding customers with missing latitude or longitude.
+The second table stores dealership IDs and their coordinates.
+The third table uses a CROSS JOIN to match every customer with every dealership and calculates the distance between their locations in miles.
+This information could help identify which dealerships are closest to each customer.
 
 ---
 
@@ -188,8 +250,20 @@ For example - dealership 1 is below:
 ### SQL
 
 ```sql
--- Your SQL here
+
+-- Question 7: Array of salespeople by dealership
+
+SELECT
+    dealership_id,
+    ARRAY_AGG(last_name || ',' || first_name) AS salespeople
+FROM salespeople
+GROUP BY dealership_id
+ORDER BY dealership_id;
+
 ```
+
+**Query Note:** This query groups salespeople by dealership and uses ARRAY_AGG() to combine their names into a single array. I joined each salesperson's last and first name with a comma and sorted the results by dealership ID. The query returned 20 dealerships.
+
 
 ### Screenshot
 
@@ -214,8 +288,26 @@ Reference image:
 ### SQL
 
 ```sql
--- Your SQL here
+
+-- Question 8: Salespeople array, state, and count
+
+SELECT
+    d.dealership_id,
+    d.state,
+    ARRAY_AGG(s.last_name || ',' || s.first_name) AS salespeople,
+    COUNT(s.salesperson_id) AS salesperson_count
+FROM dealerships d
+JOIN salespeople s
+    ON d.dealership_id = s.dealership_id
+GROUP BY
+    d.dealership_id,
+    d.state
+ORDER BY d.state;
+
 ```
+
+**Query Note:** This query joins the dealerships and salespeople tables using dealership_id. I used ARRAY_AGG() to combine the salespeople's names into an array and COUNT() to calculate the number of salespeople at each dealership. The results returned 20 dealerships, grouped by dealership and state, and sorted alphabetically by state.
+
 
 ### Screenshot
 
@@ -231,8 +323,17 @@ the **customers** table to **JSON**.
 ### SQL
 
 ```sql
--- Your SQL here
+
+-- Question 9: Convert customers table to JSON
+
+SELECT
+    ROW_TO_JSON(c) AS customer_json
+FROM customers c;
+
 ```
+
+**Query Note:** This query uses ROW_TO_JSON() to convert each customer record into a JSON object. The column names become JSON keys, and the customer information becomes the corresponding values. The query returned 50,000 customer records in JSON format.
+
 
 ### Screenshot
 
@@ -258,8 +359,30 @@ Reference image:
 ### SQL
 
 ```sql
--- Your SQL here
+
+-- Question 10: Convert salespeople arrays to JSON
+
+SELECT
+    ROW_TO_JSON(t) AS dealership_json
+FROM (
+    SELECT
+        d.dealership_id,
+        d.state,
+        ARRAY_AGG(s.last_name || ',' || s.first_name) AS salespeople,
+        COUNT(s.salesperson_id) AS salesperson_count
+    FROM dealerships d
+    JOIN salespeople s
+        ON d.dealership_id = s.dealership_id
+    GROUP BY
+        d.dealership_id,
+        d.state
+    ORDER BY d.state
+) t;
+
 ```
+
+**Query Note:** This query combines dealership information, salesperson arrays, and salesperson counts into JSON format. I used ARRAY_AGG() to group the names, COUNT() to calculate the number of salespeople, and ROW_TO_JSON() to convert each dealership's results into a JSON object. The query returned 20 dealership records sorted alphabetically by state.
+
 
 ### Screenshot
 
